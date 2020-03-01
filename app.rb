@@ -1,6 +1,10 @@
 require "cuba"
 require "pg"
-conn = PG.connect(dbname: "felix")
+conn = if ENV["DATABASE_URL"]
+         PG.connect(ENV["DATABASE_URL"])
+       else
+         PG.connect(dbname: "felix")
+       end
 
 Cuba.define do
   on post do
