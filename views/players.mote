@@ -1,0 +1,9 @@
+<h1> Players </h1>
+  {{players.map do |x| "<p>#{x}</p>"end.join }}
+    <form method="post" action="/create_new_player"> 
+       <input type="text" name="player1">
+       <input type="submit">
+     </form>
+  </body>
+</html>
+
