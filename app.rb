@@ -46,5 +46,10 @@ Cuba.define do
 
       render("games", games: games)
     end
+
+    on root do
+      res.redirect("/games")
+    end
+
   end
 end
