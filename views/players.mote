@@ -1,9 +1,12 @@
-<h1> Players </h1>
-  {{players.map do |x| "<p>#{x}</p>"end.join }}
-    <form method="post" action="/create_new_player"> 
-       <input type="text" name="player1">
-       <input type="submit" class="btn btn-primary">
-     </form>
-  </body>
-</html>
 
+<h1> Players </h1>
+<form method="post" action="/create_new_player"> 
+  <input type="text" name="player1">
+  <input type="submit" class="btn btn-primary" value="Add">
+</form>
+<form method="post" action="/delete_player">
+	% players.each do |player|
+		<p>{{player}}</p>
+	  	<button type="submit" class="btn btn-danger" value="{{player}}" name="player_for_delete">delete {{player}}</button>
+	% end
+</form>

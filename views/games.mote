@@ -1,5 +1,4 @@
 <h1>Games</h1>
-<form method="post" action="/scores">
   <table class="table table-striped">
     <thead class="thead-dark">
       <tr>
@@ -7,22 +6,40 @@
         <th>Player 2</th>
         <th>Score 1</th>
         <th>Score 2</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
       % games.each.with_index do |game, i|
-        <tr>
-          <td>{{game.fetch('p1_name')}}</td>
-          <td>{{game.fetch('p2_name')}}</td>
-          <td>
-            <input type="hidden" name="score[{{i}}][p1_id]" value="{{game.fetch("p1_id")}}">
-            <input type="hidden" name="score[{{i}}][p2_id]" value="{{game.fetch("p2_id")}}">
-            <input type="number" name="score[{{i}}][score1]"></td>
-          <td><input type="number" name="score[{{i}}][score2]"></td>
-        </tr>
-      % end
-    </tbody>
-  </table>
-  <input type="submit" class="btn btn-primary">
-</form>
+        <form method="post" action="/scores">
+         <tr>
+            <td>{{game.fetch('p1_name')}}</td>
+            <td>{{game.fetch('p2_name')}}</td>
+            <td>
 
+              <input type="hidden" name="id1"
+                value="{{game.fetch("p1_id")}}">
+
+              <input type="hidden" name="id2"
+                value="{{game.fetch("p2_id")}}">
+
+              <input type='number' name='score1'
+                value='{{game.fetch("score_1")}}'>
+
+            </td>
+            <td>
+
+              <input type='number' name='score2'
+                value='{{game.fetch("score_2")}}'>
+
+            </td>
+            <td>
+              <button type="submit" class="btn btn-primary">
+                Submit
+              </button>
+            </td>
+          </tr>
+        </form>
+    % end
+  </tbody>
+</table>
