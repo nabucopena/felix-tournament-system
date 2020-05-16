@@ -17,7 +17,11 @@
         <a href="/players" class="nav-link"> Add Players </a>
         <a href="/show_results" class="nav-link"> Results </a>
       </nav>
-      <p style="color:red">{{this.session.delete(:error)}}</p>
+      % if this.session[:error]
+        <div class="alert alert-danger" role="alert">
+          {{this.session.delete(:error)}}
+        </div>
+      % end
       {{ content }}
     </div>
   </body>
