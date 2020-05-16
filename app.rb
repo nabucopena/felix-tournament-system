@@ -51,6 +51,8 @@ Cuba.define do
     on "delete_player", param("player_for_delete") do |player|
       conn.exec_params("delete from players where id =($1)",
         [player])
+      conn.exec_params("delete from games where id_player_1 =($1) or id_player_2=($1)",
+        [player])
       res.redirect("/players")
     end
 
