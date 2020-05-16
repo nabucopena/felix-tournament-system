@@ -13,7 +13,7 @@ Cuba.define do
   on post do
 
     on "delete_player", param("player_for_delete") do |player|
-      conn.exec_params("delete from players where name =($1)",
+      conn.exec_params("delete from players where id =($1)",
         [player])
       res.redirect("/players")
     end
@@ -36,10 +36,9 @@ Cuba.define do
   on get do
     on "players" do
       players = []
-      conn.exec("select name from players") do |result|
+      conn.exec("select name, id from players") do |result|
         result.each do |row|
-          player = row.fetch("name")
-          players << player
+          players << row
         end
       end
 
