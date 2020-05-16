@@ -7,8 +7,8 @@ conn = if ENV["DATABASE_URL"]
          PG.connect(dbname: "felix")
        end
 
+Cuba.use Rack::Session::Cookie, :secret => ENV.fetch("COOKIE_SECRET")
 Cuba.plugin Cuba::Mote
-
 Cuba.define do
   on post do
 
@@ -24,6 +24,7 @@ Cuba.define do
         conn.exec_params("insert into games (id_player_1, id_player_2, score_1, score_2) values ($1, $2, $3, $4) on conflict(id_player_1, id_player_2) do update set score_1 = $3, score_2 = $4", [id1, id2, score1, score2])
         res.redirect("/games")
       end
+      session[:error] = "Scores are required"
       res.redirect("/games")
     end
 

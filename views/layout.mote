@@ -17,6 +17,7 @@
         <a href="/players" class="nav-link"> Add Players </a>
         <a href="/show_results" class="nav-link"> Results </a>
       </nav>
+      <p style="color:red">{{this.session.delete(:error)}}</p>
       {{ content }}
     </div>
   </body>
