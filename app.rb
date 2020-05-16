@@ -12,6 +12,14 @@ Cuba.plugin Cuba::Mote
 Cuba.define do
   on post do
 
+    on "log", param("password") do |password|
+      on password==ENV.fetch("PASSWORD") do
+        session[:log]="logged"
+        res.redirect("/games")
+      end
+      res.redirect("/login")
+    end
+
     on "delete_player", param("player_for_delete") do |player|
       conn.exec_params("delete from players where id =($1)",
         [player])
@@ -35,7 +43,20 @@ Cuba.define do
   end
 
   on get do
+
+    on "logout" do
+      session[:log]="out"
+      res.redirect("/games")
+    end
+
+    on "login" do
+      render "login"
+    end
+
     on "players" do
+      on session[:log]!= "logged" do
+        res.redirect("/login")
+      end
       players = []
       conn.exec("select name, id from players") do |result|
         result.each do |row|
@@ -47,6 +68,9 @@ Cuba.define do
     end
 
     on "games" do
+      on session[:log]!= "logged" do
+        res.redirect("/login")
+      end
       games = []
       sql = "select p1.name as p1_name,
         p2.name as p2_name,
@@ -66,6 +90,9 @@ Cuba.define do
     end
 
     on "show_results" do
+      on session[:log]!= "logged" do
+        res.redirect("/login")
+      end
       results = []
       sql = "select p1.name as p1_name,
         p2.name as p2_name,

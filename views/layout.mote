@@ -16,6 +16,9 @@
         <a href="/games" class="nav-link"> Games </a>
         <a href="/players" class="nav-link"> Add Players </a>
         <a href="/show_results" class="nav-link"> Results </a>
+        % if this.session[:log]=="logged"
+          <a href="/logout" class="nav-link"> Logout </a>
+        %end
       </nav>
       % if this.session[:error]
         <div class="alert alert-danger" role="alert">
