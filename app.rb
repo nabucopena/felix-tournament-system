@@ -12,10 +12,38 @@ Cuba.plugin Cuba::Mote
 Cuba.define do
   on post do
 
-    on "log", param("password") do |password|
-      on password==ENV.fetch("PASSWORD") do
+    on "register_user" do
+      on param("user"), param("password") do |user, password|
+        used_name = conn.exec_params("select count(*) from users where username=$1", [user])
+        on used_name[0].fetch("count").to_i>0 do
+          session[:error] = "This username is already registered"
+          res.redirect("/register")
+        end
+        conn.exec_params("insert into users (username, password) values ($1, $2)", [user, password])
         session[:log]="logged"
+        session[:user]=user
         res.redirect("/games")
+      end
+      session[:error] = "All parameters required"
+      res.redirect("/register")      
+    end
+
+    on "log", param("username"), param("password") do |user, password|
+      possible = []
+      conn.exec_params("select
+        username, password
+        from users
+        where username=$1",
+        [user]) do |result|
+        result.each do |row|
+          on row.fetch("password")==password do
+            session[:log]="logged"
+            session[:user]=user
+            res.redirect("/games")
+          end
+          session[:error] = "Invalid password"
+        end
+        session[:error] = "Invalid username"
       end
       res.redirect("/login")
     end
@@ -44,8 +72,13 @@ Cuba.define do
 
   on get do
 
+    on "register" do
+      render "register"
+    end
+
     on "logout" do
       session[:log]="out"
+      session[:user]=nil
       res.redirect("/games")
     end
 
