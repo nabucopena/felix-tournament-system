@@ -1,0 +1,12 @@
+<div class="text-center">
+	<h1>Welcome to the ping pong tournament system</h1>
+	<p>Log in with your account</p>
+	<form method="post" action="/log">
+		<input type="text" name="username"/>
+		<input type="password" name="password"/>
+		<button type="submit" class="btn btn-primary">login</button>
+	</form>
+	<form method="get" action="/register">
+		<button type="submit" class="btn btn-primary">Register</button>
+	</form>
+</div>

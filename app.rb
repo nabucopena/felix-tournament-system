@@ -146,7 +146,7 @@ Cuba.define do
       render("show_results", results: results)
     end
     on root do
-      res.redirect("/games")
+      render "homepage"
     end
   end
 end
