@@ -12,6 +12,29 @@ Cuba.plugin Cuba::Mote
 Cuba.define do
   on post do
 
+    on "send_message" do
+      on param("message"), param("user") do |message, user|
+        conn.exec_params("insert into messages(message, sender, receiver) values ($1, $2, $3)", [message, session[:user], user])
+      res.redirect("/chat")
+      end
+      res.redirect("/chat")
+    end
+
+    on "chat", param("sender") do |sender|
+      messages = []
+      receiver = session[:user]
+      conn.exec_params("select message, sender from messages where (sender=$1 and receiver=$2) or(sender=$2 and receiver=$1)", [sender, receiver]) do |result|
+        result.each do |message|
+          message["rec"]=""
+          if message.fetch("sender")==receiver
+            message["rec"]="color:green"
+          end
+          messages << message
+        end
+      end
+      render("show_messages", messages: messages, sender: sender)  
+    end
+
     on "register_user" do
       on param("user"), param("password") do |user, password|
         used_name = conn.exec_params("select count(*) from users where username=$1", [user])
@@ -74,6 +97,13 @@ Cuba.define do
 
   on get do
 
+    on "chat" do
+      on session[:log]!= "logged" do
+        res.redirect("/login")
+      end
+      render "chat"
+    end
+    
     on "register" do
       render "register"
     end

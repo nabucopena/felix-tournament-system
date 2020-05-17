@@ -1,0 +1,11 @@
+% messages.each do |message|
+	<p style="{{message["rec"]}}"> {{message.fetch("message")}} </p>
+% end
+% if messages.length()==0
+	<p>No messages with this user</p>
+% end
+<form method="post" action="/send_message">
+	<input type="hidden" name="user" value="{{sender}}"/>
+	<input type="text" name="message"/>
+    <button type="submit" class="btn btn-primary">Send</button>
+</form>

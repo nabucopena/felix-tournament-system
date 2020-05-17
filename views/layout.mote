@@ -17,7 +17,8 @@
         <a href="/players" class="nav-link"> Add Players </a>
         <a href="/show_results" class="nav-link"> Results </a>
         % if this.session[:log]=="logged"
-          <p class="nav-link" style="position:absolute; top:0; right:0"> {{this.session[:user]}}<br><a href="/logout"> Logout </a> </p>
+          <a href="/chat" class="nav-link"> Chat </a>
+          <p class="nav-link" style="position:absolute; top:0; right:0"> {{this.session[:user]}}<br> <a href="/logout"> Logout </a> </p>
         %end
       </nav>
       % if this.session[:error]
