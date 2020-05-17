@@ -18,6 +18,7 @@
         <a href="/show_results" class="nav-link"> Results </a>
         % if this.session[:log]=="logged"
           <a href="/logout" class="nav-link"> Logout </a>
+          <p style="position:absolute; top:0; right:0"> {{this.session[:user]}} </p>
         %end
       </nav>
       % if this.session[:error]
