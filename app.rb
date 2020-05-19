@@ -6,11 +6,49 @@ conn = if ENV["DATABASE_URL"]
        else
          PG.connect(dbname: "felix")
        end
+module Helpers
+  def current_user
+    session[:user]
+  end
+end
 
 Cuba.use Rack::Session::Cookie, :secret => ENV.fetch("COOKIE_SECRET")
 Cuba.plugin Cuba::Mote
+Cuba.plugin Helpers
 Cuba.define do
+
+    on "login" do
+      on get do
+        render "login"
+      end
+      on post do
+        on param("username"), param("password") do |user, password|
+          possible = []
+          conn.exec_params("select
+            username, password
+            from users
+            where username=$1",
+            [user]) do |result|
+            result.each do |row|
+              on row.fetch("password")==password do
+                session[:user]=user
+                res.redirect("/games")
+              end
+              session[:error] = "Invalid password"
+            end
+            session[:error] = "Invalid username"
+          end
+        end
+      res.redirect("/login")
+      end
+    end
+
   on post do
+
+    on "logout" do
+      session.clear
+      res.redirect("/games")
+    end
 
     on "send_message" do
       on param("message"), param("user") do |message, user|
@@ -22,7 +60,7 @@ Cuba.define do
 
     on "chat", param("sender") do |sender|
       messages = []
-      receiver = session[:user]
+      receiver = current_user
       conn.exec_params("select message, sender from messages where (sender=$1 and receiver=$2) or(sender=$2 and receiver=$1)", [sender, receiver]) do |result|
         result.each do |message|
           message["rec"]=""
@@ -43,32 +81,12 @@ Cuba.define do
           res.redirect("/register")
         end
         conn.exec_params("insert into users (username, password) values ($1, $2)", [user, password])
-        session[:log]="logged"
+
         session[:user]=user
         res.redirect("/games")
       end
       session[:error] = "All parameters required"
       res.redirect("/register")      
-    end
-
-    on "log", param("username"), param("password") do |user, password|
-      possible = []
-      conn.exec_params("select
-        username, password
-        from users
-        where username=$1",
-        [user]) do |result|
-        result.each do |row|
-          on row.fetch("password")==password do
-            session[:log]="logged"
-            session[:user]=user
-            res.redirect("/games")
-          end
-          session[:error] = "Invalid password"
-        end
-        session[:error] = "Invalid username"
-      end
-      res.redirect("/login")
     end
 
     on "delete_player", param("player_for_delete") do |player|
@@ -98,7 +116,7 @@ Cuba.define do
   on get do
 
     on "chat" do
-      on session[:log]!= "logged" do
+      on !session[:user] do
         res.redirect("/login")
       end
       render "chat"
@@ -108,18 +126,8 @@ Cuba.define do
       render "register"
     end
 
-    on "logout" do
-      session[:log]="out"
-      session[:user]=nil
-      res.redirect("/games")
-    end
-
-    on "login" do
-      render "login"
-    end
-
     on "players" do
-      on session[:log]!= "logged" do
+      on !session[:user] do
         res.redirect("/login")
       end
       players = []
@@ -133,7 +141,7 @@ Cuba.define do
     end
 
     on "games" do
-      on session[:log]!= "logged" do
+      on !session[:user] do
         res.redirect("/login")
       end
       games = []
@@ -155,7 +163,7 @@ Cuba.define do
     end
 
     on "show_results" do
-      on session[:log]!= "logged" do
+      on !session[:user] do
         res.redirect("/login")
       end
       results = []
