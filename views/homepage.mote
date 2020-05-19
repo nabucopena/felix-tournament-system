@@ -1,7 +1,7 @@
 <div class="text-center">
 	<h1>Welcome to the ping pong tournament system</h1>
 	<p>Log in with your account</p>
-	<form method="post" action="/log">
+	<form method="post" action="/login">
 		<input type="text" name="username"/>
 		<input type="password" name="password"/>
 		<button type="submit" class="btn btn-primary">login</button>

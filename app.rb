@@ -38,6 +38,7 @@ Cuba.define do
             end
             session[:error] = "Invalid username"
           end
+          res.redirect("/login")
         end
       res.redirect("/login")
       end
