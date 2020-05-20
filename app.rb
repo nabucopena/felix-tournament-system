@@ -23,23 +23,20 @@ Cuba.define do
       end
       on post do
         on param("username"), param("password") do |user, password|
-          conn.exec_params("select
+          result = conn.exec_params("select
             username, password
             from users
             where username=$1",
-            [user]) do |result|
-            on conn.exec_params("select count(*)
-              from users where username=$1",
-              [user]).first.fetch("count").to_i>0 do
-              on result.first.fetch("password")==password do
-                session[:user]=user
-                res.redirect("/games")
-              end
-              session[:error] = "Invalid password"
-              res.redirect("/login")
+          [user]).first
+          on result do
+            on result.fetch("password")==password do
+              session[:user]=user
+              res.redirect("/games")
             end
-            session[:error] = "Invalid username"
+            session[:error] = "Invalid password"
+            res.redirect("/login")
           end
+          session[:error] = "Invalid username"
           res.redirect("/login")
         end
         res.redirect("/login")
