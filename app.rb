@@ -1,6 +1,7 @@
 require "cuba"
 require "cuba/mote"
 require "pg"
+require "bcrypt"
 conn = if ENV["DATABASE_URL"]
          PG.connect(ENV["DATABASE_URL"])
        else
@@ -29,7 +30,7 @@ Cuba.define do
             where username=$1",
           [user]).first
           on result do
-            on result.fetch("password")==password do
+            on BCrypt::Password.new(result.fetch("password"))==password do
               session[:user]=user
               res.redirect("/games")
             end
@@ -80,7 +81,9 @@ Cuba.define do
           session[:error] = "This username is already registered"
           res.redirect("/register")
         end
-        conn.exec_params("insert into users (username, password) values ($1, $2)", [user, password])
+        conn.exec_params("insert into users
+          (username, password) values ($1, $2)",
+          [user, BCrypt::Password.create(password)])
 
         session[:user]=user
         res.redirect("/games")
