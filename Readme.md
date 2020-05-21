@@ -1,17 +1,11 @@
-Vamos a hacer un sistema de organizacion de campeonato de pingpong
+# Tournament System
 
-- Necesitamos una lista de jugadores:
-  ej:
-  - Felix
-  - Francisco
-  - Carlos
-  - Federico
-  - Roberto
-  - Anita
-- Para jugar todos contra todos
-- Y anotar los puntos
-- Y determinar el ganador
+This is a system that allows...
 
-/players -> formulario con lista de jugadores
-/games   -> muestra una tabla con un input con puntos de cada uno y un botón
+# Install
 
+## System dependencies
+
+# Deploy to heroku
+
+sudo snap install --classic heroku...
