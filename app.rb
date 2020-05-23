@@ -2,14 +2,14 @@ require "cuba"
 require "cuba/mote"
 require "pg"
 require "bcrypt"
-conn = if ENV["DATABASE_URL"]
-         PG.connect(ENV["DATABASE_URL"])
-       else
-         PG.connect(dbname: "felix")
-       end
+require "./db_connection"
+DBConnection.connect
 module Helpers
   def current_user
     session[:user]
+  end
+  def conn
+    $conn
   end
 end
 
