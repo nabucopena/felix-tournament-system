@@ -13,16 +13,8 @@
   <body>
     <div class="container">
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a href="/games" class="nav-link"> Games </a>
-        <a href="/players" class="nav-link"> Add Players </a>
-        <a href="/show_results" class="nav-link"> Results </a>
-        <a href="/chat" class="nav-link"> Chat </a>
-        <div class="nav-link" style="position:absolute; top:0; right:0">
-          {{this.current_user}}<br>
-          <form method="post" action="/logout">
-            <button type="submit"> Logout </button> 
-          </form>
-        </div>
+        <a href="/login" class="nav-link"> Login </a>
+        <a href="/register" class="nav-link"> Register </a>
       </nav>
       % if this.session[:error]
         <div class="alert alert-danger" role="alert">

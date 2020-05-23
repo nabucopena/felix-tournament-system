@@ -20,7 +20,7 @@ Cuba.define do
 
     on "login" do
       on get do
-        render "login"
+        render("login", {}, "unlogged_layout")
       end
       on post do
         on param("username"), param("password") do |user, password|
@@ -48,7 +48,7 @@ Cuba.define do
 
     on "logout" do
       session.clear
-      res.redirect("/games")
+      res.redirect("/login")
     end
 
     on "send_message" do
@@ -126,7 +126,7 @@ Cuba.define do
     end
     
     on "register" do
-      render "register"
+      render("register", {}, "unlogged_layout")
     end
 
     on "players" do
@@ -187,7 +187,11 @@ Cuba.define do
       render("show_results", results: results)
     end
     on root do
-      render "homepage"
+      if session[:user]
+        render "homepage"
+      else
+        render("homepage", {}, "unlogged_layout")
+      end
     end
   end
 end
