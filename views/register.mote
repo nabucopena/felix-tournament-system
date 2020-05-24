@@ -1,8 +1,16 @@
-<form method="post" action="register_user">
-	<p>Username:<input type="text" name="user"/></p>
-	<p>Password:<input type="password" name="password"/></p>
-	<button type="submit" class="btn btn-primary">Register</button>
-</form>
-<form method="get" action="/login">
-	<button type="submit" >Log in</button>
-</form>
+<h1 class="p-3 mb-2 text-primary d-flex justify-content-center">
+  Register
+</h1>
+<div class="d-flex justify-content-center">
+  <form method="post" action="register_user">
+    <p>
+      Username:<input type="text" name="user" class="row"/>
+    </p>
+    <p>
+      Password:<input type="password" name="password" class="row mt-2"/>
+    </p>
+    <button type="submit" class="btn btn-primary btn-block mt-2">
+      Register
+    </button>
+  </form>
+</div>
