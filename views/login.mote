@@ -1,8 +1,10 @@
-<form method="post" action="/login">
-	<input type="text" name="username"/>
-	<input type="password" name="password"/>
-	<button type="submit" class="btn btn-primary">login</button>
-</form>
-<form method="get" action="/register">
-	<button type="submit" >register</button>
-</form>
+<h1 class="p-3 mb-2 text-primary d-flex justify-content-center">
+  Log In
+</h1>
+<div class="d-flex justify-content-center">
+  <form method="post" action="/login">
+    <input type="text" name="username" placeholder="Username" class="row">
+    <input type="password" name="password" placeholder="Password" class="row mt-2">
+    <button type="submit" class="btn btn-primary btn-block mt-2">login</button>
+  </form>
+</div>
