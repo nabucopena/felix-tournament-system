@@ -64,9 +64,9 @@ Cuba.define do
       receiver = current_user
       conn.exec_params("select message, sender from messages where (sender=$1 and receiver=$2) or(sender=$2 and receiver=$1)", [sender, receiver]) do |result|
         result.each do |message|
-          message["rec"]=""
+          message["rec"]="received"
           if message.fetch("sender")==receiver
-            message["rec"]="color:green"
+            message["rec"]="sended"
           end
           messages << message
         end

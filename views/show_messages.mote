@@ -1,5 +1,22 @@
+<style>
+  p.sended {
+    max-width: 20%;
+    background-color: lightgreen;
+    border-style: offset;
+    border: 2px solid lightgreen;
+    border-radius: 5px; 
+  }
+  p.received {
+    max-width: 20%;
+    background-color: lightblue;
+    border-style: offset;
+    border: 2px solid lightblue;
+    border-radius: 5px; 
+  }
+</style>
+<p><b>{{  sender.capitalize  }}</b></p>
 % messages.each do |message|
-	<p style="{{message["rec"]}}"> {{message.fetch("message")}} </p>
+	<p class="{{message["rec"]}}"> {{message.fetch("message")}} </p>
 % end
 % if messages.length()==0
 	<p>No messages with this user</p>
