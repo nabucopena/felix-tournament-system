@@ -1,0 +1,19 @@
+<h1>Positions</h1>
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th>Player</th>
+      <th>Played</th>
+      <th>Won</th>
+    </tr>
+  </thead>
+  <tbody>
+    % players.each do |player|
+        <tr>
+          <td>{{player.fetch("name")}}</td>
+          <td>{{player.fetch("played")}}</td>
+          <td>{{player.fetch("won")}}</td>
+        </tr>
+    % end
+  </tbody>
+</table>

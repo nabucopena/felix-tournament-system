@@ -16,6 +16,7 @@
         <a href="/games" class="nav-link"> Games </a>
         <a href="/players" class="nav-link"> Add Players </a>
         <a href="/show_results" class="nav-link"> Results </a>
+        <a href="/positions" class="nav-link"> Positions </a>
         <a href="/chat" class="nav-link"> Chat </a>
         <div class="nav-link" style="position:absolute; top:0; right:0">
           {{this.current_user}}<br>
