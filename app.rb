@@ -133,14 +133,42 @@ Cuba.define do
       on !session[:user] do
         res.redirect("/login")
       end
-      players = []
-      conn.exec("select name, id from players") do |result|
-        result.each do |row|
-          players << row
+      on root do
+        players = []
+        conn.exec("select name, id from players") do |result|
+          result.each do |row|
+            players << row
+          end
+        end
+        render "players", players: players
+      end
+      on ":id" do |id|
+        player = conn.exec_params(
+          "select name from players where id=$1", [id]
+          ).first
+        on player do
+          games = conn.exec_params(
+            "select score_1 as score,
+            score_2 as opponent_score,
+            name as opponent
+            from games
+            join players
+            on id_player_2=id
+            where id_player_1=$1
+            union
+            select score_2 as score,
+            score_1 as opponent_score,
+            name as opponent
+            from games
+            join players
+            on id_player_1=id
+            where id_player_2=$1", [id])
+          render "player", {
+            player: player,
+            games:games
+            }
         end
       end
-
-      render "players", players: players
     end
 
     on "games" do
