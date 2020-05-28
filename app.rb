@@ -124,10 +124,10 @@ Cuba.define do
       end
       sql = <<~SQL
         select name,
-        count(*) filter(where id_player_1 is not null) as played,
-        count(*) filter(where (id=id_player_1 and score_1>score_2) or (id=id_player_2 and score_2>score_1)) as won
+        count(*) filter(where my_id is not null) as played,
+        count(*) filter(where id=my_id and my_score>opponent_score) as won
         from players
-        left join games on id_player_1=id or id_player_2=id
+        left join my_games on my_id=id
         group by id;
         SQL
       players = conn.exec(sql)
@@ -164,21 +164,15 @@ Cuba.define do
           ).first
         on player do
           games = conn.exec_params(
-            "select score_1 as score,
-            score_2 as opponent_score,
+            "select my_score as score,
+            opponent_score,
             name as opponent
-            from games
+            from my_games
             join players
-            on id_player_2=id
-            where id_player_1=$1
-            union
-            select score_2 as score,
-            score_1 as opponent_score,
-            name as opponent
-            from games
-            join players
-            on id_player_1=id
-            where id_player_2=$1", [id])
+            on opponent_id=id
+            where my_id=$1",
+            [id]
+            )
           render "player", {
             player: player,
             games:games
