@@ -96,7 +96,7 @@ Cuba.define do
   on get do
 
     on "positions" do
-      on !session[:user] do
+      unless current_user do
         res.redirect("/login")
       end
       sql = <<~SQL
@@ -116,7 +116,7 @@ Cuba.define do
     end
 
     on "players" do
-      on !session[:user] do
+      unless current_user
         res.redirect("/login")
       end
       on root do
@@ -152,7 +152,7 @@ Cuba.define do
     end
 
     on "games" do
-      on !session[:user] do
+      unless current_user
         res.redirect("/login")
       end
       games = []
@@ -174,7 +174,7 @@ Cuba.define do
     end
 
     on "show_results" do
-      on !session[:user] do
+      unless current_user
         res.redirect("/login")
       end
       results = []
@@ -195,7 +195,7 @@ Cuba.define do
       render("show_results", results: results)
     end
     on root do
-      if session[:user]
+      if current_user
         render "homepage"
       else
         render("homepage", {}, "unlogged_layout")
