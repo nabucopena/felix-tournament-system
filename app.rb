@@ -118,6 +118,22 @@ Cuba.define do
 
   on get do
 
+    on "positions" do
+      on !session[:user] do
+        res.redirect("/login")
+      end
+      sql = <<~SQL
+        select name,
+        count(*) filter(where id_player_1 is not null) as played,
+        count(*) filter(where (id=id_player_1 and score_1>score_2) or (id=id_player_2 and score_2>score_1)) as won
+        from players
+        left join games on id_player_1=id or id_player_2=id
+        group by id;
+        SQL
+      players = conn.exec(sql)
+      render("positions", {players: players})
+    end
+
     on "chat" do
       on !session[:user] do
         res.redirect("/login")
