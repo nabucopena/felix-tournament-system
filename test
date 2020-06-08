@@ -1,0 +1,3 @@
+#!/bin/bash
+
+DATABASE_URL=postgres:///felix_test ruby migrations.rb && DATABASE_URL=postgres:///felix_test cutest tests/test.rb
