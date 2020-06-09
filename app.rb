@@ -1,7 +1,5 @@
 require "cuba"
 require "cuba/mote"
-require "pg"
-require "bcrypt"
 require "./db_connection"
 require "./models.rb"
 DBConnection.connect

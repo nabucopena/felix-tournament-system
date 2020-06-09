@@ -1,5 +1,5 @@
+require "pg"
 require "bcrypt"
-
 class Games
   def self.create_player(new_player)
     $conn.exec_params(
