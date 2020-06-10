@@ -6,7 +6,7 @@
 </form>
 <form method="post" action="/delete_player">
 	% players.each do |player|
-		<p>{{player.fetch("name")}}</p>
-	  	<button type="submit" class="btn btn-danger" value="{{player.fetch("id")}}" name="player_for_delete">delete {{player.fetch("name")}}</button>
+		<p>{{this.esc(player.fetch("name"))}}</p>
+	  	<button type="submit" class="btn btn-danger" value="{{player.fetch("id")}}" name="player_for_delete">delete {{this.esc(player.fetch("name"))}}</button>
 	% end
 </form>

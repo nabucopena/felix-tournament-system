@@ -11,8 +11,8 @@
     <tbody>
       % results.each.with_index do |game, i|
          <tr>
-            <td>{{game.fetch('p1_name')}}</td>
-            <td>{{game.fetch('p2_name')}}</td>
+            <td>{{this.esc(game.fetch('p1_name'))}}</td>
+            <td>{{this.esc(game.fetch('p2_name'))}}</td>
             <td>{{game.fetch("score_1")}}</td>
             <td>{{game.fetch("score_2")}}</td>
           </tr>
