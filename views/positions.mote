@@ -10,7 +10,7 @@
   <tbody>
     % players.each do |player|
         <tr>
-          <td>{{player.fetch("name")}}</td>
+          <td>{{this.esc(player.fetch("name"))}}</td>
           <td>{{player.fetch("played")}}</td>
           <td>{{player.fetch("won")}}</td>
         </tr>

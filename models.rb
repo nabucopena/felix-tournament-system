@@ -1,5 +1,8 @@
 require "pg"
 require "bcrypt"
+require "requests"
+require "fastimage"
+
 class Games
   def self.create_player(new_player)
     $conn.exec_params(
@@ -92,15 +95,32 @@ class Games
 end
 
 class Accounts
+
+  def self.change_avatar(url:, id:)
+    begin
+      response = Requests.request("GET", url)
+      type = FastImage.type(url).to_s
+      if type == "png"
+        File.write("public/#{id}.png", response.body)
+      else
+        error = "invalid image"
+      end
+    rescue Errno::ECONNREFUSED => e
+      error = "No image found"
+    end
+    {error: error}
+  end
+
   def self.check_login(user, password)
     result = $conn.exec_params("select
-      username, password
+      id, username, password
       from users
       where username=$1",
       [user]).first
+    id = result.fetch("id")
     if result
       if BCrypt::Password.new(result.fetch("password"))==password
-        {user: user}
+        {user: {name: user, id: id}}
       else
         {error: "Invalid password"}
       end
@@ -119,10 +139,13 @@ class Accounts
       {error: "This username is already registered"}
     else
       encrypted = BCrypt::Password.create(password)
-      $conn.exec_params("insert into users
-        (username, password) values ($1, $2)",
-        [user, encrypted])
-      {user: user}
+      id = $conn.exec_params("insert into users
+        (username, password) values ($1, $2) returning id",
+        [user, encrypted]).first.fetch("id")
+      response = Requests.request("GET",
+        "https://api.adorable.io/avatars/144/#{id}.png")
+      File.write("public/#{id}.png", response.body)
+      {user: {name: user, id: id}}
     end
   end
 end

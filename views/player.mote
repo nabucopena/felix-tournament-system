@@ -1,4 +1,4 @@
-<h1> {{player.fetch("name")}} </h1>
+<h1> {{this.esc(player.fetch("name"))}} </h1>
 <h2> Games </h2>
 <table class="table table-striped">
   <thead class="thead-dark">
@@ -11,7 +11,7 @@
   <tbody>
     % games.each do |game|
       <tr>
-          <td>{{game.fetch('opponent')}}</td>
+          <td>{{this.esc(game.fetch('opponent'))}}</td>
           <td>{{game.fetch('score')}}</td>
           <td>{{game.fetch('opponent_score')}}</td>
         </tr>

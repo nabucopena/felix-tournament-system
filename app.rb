@@ -1,5 +1,6 @@
 require "cuba"
 require "cuba/mote"
+require "cgi"
 require "./db_connection"
 require "./models.rb"
 DBConnection.connect
@@ -10,8 +11,12 @@ module Helpers
   def conn
     $conn
   end
+  def esc(string)
+    CGI::escapeHTML(string)
+  end
 end
 
+Cuba.use Rack::Static, :urls => ["png"], :root => 'public'
 Cuba.use Rack::Session::Cookie, :secret => ENV.fetch("COOKIE_SECRET")
 Cuba.plugin Cuba::Mote
 Cuba.plugin Helpers
@@ -62,6 +67,25 @@ Cuba.define do
   end
   
   on !!current_user do
+
+    on "settings" do
+      on get do
+        render("settings")
+      end
+      on post do
+        on param("url") do |url|
+          result = Accounts.change_avatar(url: url, id: current_user.fetch(:id))
+          session[:error] = result.fetch(:error)
+          if session[:error]
+            res.redirect("/settings")
+          else
+            res.redirect("/games")
+          end
+        end
+        res.redirect("/games")
+      end
+    end
+
     on post do
       on "delete_player", param("player_for_delete") do |player|
         Games.delete_player(player)

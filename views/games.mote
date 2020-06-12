@@ -13,8 +13,8 @@
       % games.each.with_index do |game, i|
         <form method="post" action="/scores">
          <tr>
-            <td>{{game.fetch('p1_name')}}</td>
-            <td>{{game.fetch('p2_name')}}</td>
+            <td>{{this.esc(game.fetch('p1_name'))}}</td>
+            <td>{{this.esc(game.fetch('p2_name'))}}</td>
             <td>
 
               <input type="hidden" name="id1"
