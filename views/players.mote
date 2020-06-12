@@ -1,12 +1,37 @@
-
-<h1> Players </h1>
-<form method="post" action="/create_new_player"> 
-  <input type="text" name="player1">
-  <input type="submit" class="btn btn-primary" value="Add">
-</form>
-<form method="post" action="/delete_player">
-	% players.each do |player|
-		<p>{{this.esc(player.fetch("name"))}}</p>
-	  	<button type="submit" class="btn btn-danger" value="{{player.fetch("id")}}" name="player_for_delete">delete {{this.esc(player.fetch("name"))}}</button>
-	% end
-</form>
+<table class="table table-striped">
+  <thead class="thead-dark">
+	<tr>
+	  <th>
+	    <h1> Players </h1>
+	  </th>
+	  <th>
+	    <form method="post" action="/create_new_player"> 
+	      <input type="text" name="player1">
+	      <input type="submit" class="btn btn-primary" value="Add">
+		</form>
+	  </th>
+	  <th>
+	  </th>
+	</tr>
+  </thead>
+  <tbody>
+	<form method="post" action="/delete_player">
+	  % players.each do |player|
+	  	<tr>
+	 	  <td>
+	 	    <p>{{this.esc(player.fetch("name"))}}</p>
+	 	  </td>
+	 	  <td>
+	 	    <a href="players/{{player.fetch("id")}}"> Details </a>
+	 	  </td>
+	 	  <td>
+		    <button type="submit" class="btn btn-danger"
+		      value="{{player.fetch("id")}}" 
+		      name="player_for_delete">delete
+	          {{this.esc(player.fetch("name"))}}</button>
+	      </td>
+	    </tr>
+	  % end
+    </form>
+  </tbody>
+</table>
