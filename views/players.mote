@@ -25,10 +25,12 @@
 	 	    <a href="players/{{player.fetch("id")}}"> Details </a>
 	 	  </td>
 	 	  <td>
-		    <button type="submit" class="btn btn-danger"
-		      value="{{player.fetch("id")}}" 
-		      name="player_for_delete">delete
-	          {{this.esc(player.fetch("name"))}}</button>
+	 	    % if player.fetch("played").to_i == 0
+              <button type="submit" class="btn btn-danger"
+		        value="{{player.fetch("id")}}" 
+		        name="player_for_delete">delete
+	            {{this.esc(player.fetch("name"))}}</button>
+	        % end
 	      </td>
 	    </tr>
 	  % end

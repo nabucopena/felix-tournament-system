@@ -19,7 +19,13 @@ class Games
   end
 
   def self.list_players
-    $conn.exec("select name, id from players").to_a
+    $conn.exec("select
+      name,
+      id,
+      count(*) filter(where my_id is not null) as played
+      from players
+      left join my_games on my_id=id
+      group by id").to_a
   end
 
   def self.list_player_games(player_id)
