@@ -19,6 +19,9 @@
         <a href="/show_results" class="nav-link"> Results </a>
         <a href="/positions" class="nav-link"> Positions </a>
         <a href="/settings" class="nav-link"> Settings </a>
+        <form action="/reset" method="post"> 
+          <button type="submit" class="nav-link">Reset</button>
+        </form>
         <div class="nav-link" style="position:absolute; top:0; right:0">
           <form method="post" action="/logout" class="form-inline">
             {{this.esc(this.current_user.fetch(:name))}}

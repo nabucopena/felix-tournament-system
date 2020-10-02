@@ -4,6 +4,15 @@ require "requests"
 require "fastimage"
 
 class Games
+  def self.resetdb
+    $conn.exec(
+      "delete from games"
+    )
+    $conn.exec(
+      "delete from players"
+    )
+  end
+
   def self.create_player(new_player)
     $conn.exec_params(
       "insert into players (name) values ($1)",

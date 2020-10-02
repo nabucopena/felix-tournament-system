@@ -4,6 +4,7 @@
     <tr>
       <th>Player</th>
       <th>Played</th>
+      <th>Left</th>
       <th>Won</th>
     </tr>
   </thead>
@@ -12,6 +13,7 @@
         <tr>
           <td>{{this.esc(player.fetch("name"))}}</td>
           <td>{{player.fetch("played")}}</td>
+          <td>{{players.length - 1 - player.fetch("played").to_i}}</td>
           <td>{{player.fetch("won")}}</td>
         </tr>
     % end

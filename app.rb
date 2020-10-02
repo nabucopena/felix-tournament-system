@@ -67,6 +67,10 @@ Cuba.define do
   end
   
   on !!current_user do
+    on post, "reset" do
+      Games.resetdb
+      res.redirect("/players")
+    end
 
     on "settings" do
       on get do
